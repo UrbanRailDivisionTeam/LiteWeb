@@ -4,8 +4,51 @@ import * as echarts from 'echarts'
 import { onMounted } from 'vue'
 import { QuestionFilled } from '@element-plus/icons-vue'
 
+// 上一次数据更新时间
 const lastUpdateTime = ref('2024-08-29 06:08:00')
+// 当前明细选择的组室
 const selectedDepartment = ref('qualityTech')
+// 图表实例对象
+const charts = ref({
+    qualityTech: null,
+    projectEng: null,
+    management: null,
+    assembly: null,
+    delivery: null,
+})
+// 部门改善指标数据
+const departmentStats = ref({
+    qualityTech: {
+        rate: 100,
+        completed: 0,
+        target: 0,
+        subDepts: ['质量保证组', '交付质量组', '过程质量组', '粘接组', '内装组', '机械组', '电气组', '调试组', '总体技术组', '技术管理组', '精益信息化组', '检查班'],
+    },
+    projectEng: {
+        rate: 100,
+        completed: 0,
+        target: 0,
+        subDepts: ['交车进程组', '生产管理组', '现场安全组', '计划管理组', '设备管理组'],
+    },
+    management: {
+        rate: 100,
+        completed: 0,
+        target: 0,
+        subDepts: ['人力资源室', '财务室', '行政室', '企划室', '安环室'],
+    },
+    assembly: {
+        rate: 100,
+        completed: 0,
+        target: 0,
+        subDepts: ['总装一区', '总装二区', '总装三区', '总装四区', '总装五区'],
+    },
+    delivery: {
+        rate: 100,
+        completed: 0,
+        target: 0,
+        subDepts: ['交付一区', '交付二区', '交付三区', '交付四区', '交付五区'],
+    },
+})
 
 watch(selectedDepartment, (newDept) => {
     nextTick(() => {
@@ -26,64 +69,16 @@ watch(selectedDepartment, (newDept) => {
     })
 })
 
-// 部门改善指标数据
-const departmentStats = {
-    qualityTech: {
-        rate: 85.6,
-        trend: 5.3,
-        completed: 30,
-        target: 60,
-        subDepts: ['质量控制室', '技术研发室', '实验室', '标准化室', '计量室'],
-    },
-    projectEng: {
-        rate: 78.2,
-        trend: 8.7,
-        completed: 25,
-        target: 55,
-        subDepts: ['工程一室', '工程二室', '工程三室', '工程四室', '工程五室'],
-    },
-    management: {
-        rate: 92.5,
-        trend: 3.2,
-        completed: 35,
-        target: 50,
-        subDepts: ['人力资源室', '财务室', '行政室', '企划室', '安环室'],
-    },
-    assembly: {
-        rate: 88.9,
-        trend: 6.5,
-        completed: 40,
-        target: 65,
-        subDepts: ['总装一区', '总装二区', '总装三区', '总装四区', '总装五区'],
-    },
-    delivery: {
-        rate: 83.4,
-        trend: 4.8,
-        completed: 28,
-        target: 58,
-        subDepts: ['交付一区', '交付二区', '交付三区', '交付四区', '交付五区'],
-    },
-}
 
-// 格式化百分比
-const formatPercent = (value) => {
-    return `${value.toFixed(1)}%`
-}
 
-// 图表实例对象
-const charts = ref({
-    qualityTech: null,
-    projectEng: null,
-    management: null,
-    assembly: null,
-    delivery: null,
-})
+
+
+
+
 
 // 初始化部门图表
 const initDeptChart = (deptKey) => {
     const chartDom = document.getElementById(`${deptKey}Chart`)
-    if (!chartDom) return
-
     const myChart = echarts.init(chartDom)
     charts.value[deptKey] = myChart
 
@@ -111,7 +106,7 @@ const initDeptChart = (deptKey) => {
         },
         xAxis: {
             type: 'category',
-            data: departmentStats[deptKey].subDepts,
+            data: departmentStats.value[deptKey].subDepts,
             axisLabel: {
                 interval: 0,
                 rotate: 30,
@@ -175,12 +170,12 @@ const initDeptChart = (deptKey) => {
                 },
                 data: [
                     {
-                        value: departmentStats[deptKey].rate,
+                        value: departmentStats.value[deptKey].rate,
                         name: '已完成',
                         itemStyle: { color: '#409EFF' },
                     },
                     {
-                        value: 100 - departmentStats[deptKey].rate,
+                        value: 100 - departmentStats.value[deptKey].rate,
                         name: '未完成',
                         itemStyle: { color: '#E4E7ED' },
                     },
@@ -199,9 +194,15 @@ const handleResize = () => {
     })
 }
 
-onMounted(() => {
-    // 只初始化当前选中部门的图表
-    initDeptChart(selectedDepartment.value)
+// 格式化百分比
+const formatPercent = (value) => {
+    return `${value.toFixed(1)}%`
+}
+
+onMounted(async () => {
+    await
+        // 只初始化当前选中部门的图表
+        initDeptChart(selectedDepartment.value)
     // 监听窗口大小变化
     window.addEventListener('resize', handleResize)
 })
