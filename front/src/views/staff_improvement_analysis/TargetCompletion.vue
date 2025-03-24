@@ -2,29 +2,26 @@
 import { ref, watch, nextTick } from 'vue'
 import * as echarts from 'echarts'
 import { onMounted } from 'vue'
-import { useLayoutStore } from '@/stores/layout'
+import { QuestionFilled } from '@element-plus/icons-vue'
 
-const layoutStore = useLayoutStore()
 const lastUpdateTime = ref('2024-08-29 06:08:00')
 const selectedDepartment = ref('qualityTech')
 
-// 监听侧边栏状态变化
-watch(layoutStore.isCollapse, (newVlaue) => {
-    nextTick(() => {
-        const chart = charts.value[selectedDepartment.value]
-        console.log(chart)
-        if (chart) {
-            chart.resize()
-        }
-    })
-})
-
-// 监听选中部门变化
 watch(selectedDepartment, (newDept) => {
     nextTick(() => {
-        const chart = charts.value[newDept]
-        if (chart) {
-            chart.resize()
+        // 销毁其他部门的图表
+        Object.keys(charts.value).forEach((key) => {
+            if (key !== newDept && charts.value[key]) {
+                charts.value[key].dispose()
+                charts.value[key] = null
+            }
+        })
+
+        // 初始化当前选中的部门图表
+        if (!charts.value[newDept]) {
+            initDeptChart(newDept)
+        } else {
+            charts.value[newDept].resize()
         }
     })
 })
@@ -203,11 +200,8 @@ const handleResize = () => {
 }
 
 onMounted(() => {
-    // 初始化所有部门的图表
-    Object.keys(departmentStats).forEach((deptKey) => {
-        initDeptChart(deptKey)
-    })
-
+    // 只初始化当前选中部门的图表
+    initDeptChart(selectedDepartment.value)
     // 监听窗口大小变化
     window.addEventListener('resize', handleResize)
 })
@@ -220,9 +214,7 @@ onMounted(() => {
         </div>
 
         <div class="data-overview">
-            <div class="update-time">
-                数据仅显示当月完成情况，后台自动更新数据，最近更新：{{ lastUpdateTime }}
-            </div>
+            <div class="update-time">数据仅显示当月完成情况，后台自动更新数据，最近更新：{{ lastUpdateTime }}</div>
 
             <div class="statistics-cards">
                 <el-card class="stat-card">
@@ -313,16 +305,16 @@ onMounted(() => {
             </div>
         </div>
 
-        <div class="trend-analysis">
+        <el-card>
             <div class="section-header">
                 <h3>部门对应组室完成情况</h3>
                 <div class="header-right">
-                    <el-radio-group v-model="selectedDepartment" size="small">
-                        <el-radio-button label="qualityTech">质量技术部</el-radio-button>
-                        <el-radio-button label="projectEng">项目工程部</el-radio-button>
-                        <el-radio-button label="management">综合管理部</el-radio-button>
-                        <el-radio-button label="assembly">总成车间</el-radio-button>
-                        <el-radio-button label="delivery">交车车间</el-radio-button>
+                    <el-radio-group v-model="selectedDepartment">
+                        <el-radio-button value="qualityTech">质量技术部</el-radio-button>
+                        <el-radio-button value="projectEng">项目工程部</el-radio-button>
+                        <el-radio-button value="management">综合管理部</el-radio-button>
+                        <el-radio-button value="assembly">总成车间</el-radio-button>
+                        <el-radio-button value="delivery">交车车间</el-radio-button>
                     </el-radio-group>
                 </div>
             </div>
@@ -333,13 +325,13 @@ onMounted(() => {
                 <div id="assemblyChart" class="chart-item" v-show="selectedDepartment === 'assembly'"></div>
                 <div id="deliveryChart" class="chart-item" v-show="selectedDepartment === 'delivery'"></div>
             </div>
-        </div>
+        </el-card>
     </div>
 </template>
 
 <style scoped>
 .operation-analysis {
-    padding: 15px;
+    padding: 10px 10px 15px 15px;
 }
 
 .page-header {

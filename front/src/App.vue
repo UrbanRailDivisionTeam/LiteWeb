@@ -1,33 +1,22 @@
 <script setup>
 import { RouterView } from 'vue-router'
-import { HomeFilled, Document, Fold, Expand, TrendCharts } from '@element-plus/icons-vue'
-import { useLayoutStore } from './stores/layout'
-
-const layoutStore = useLayoutStore()
+import { HomeFilled, Document, TrendCharts } from '@element-plus/icons-vue'
+import { useLayoutStore } from './stores/counter'
 </script>
 
 <template>
     <el-container class="layout-container">
-        <el-aside :width="layoutStore.isCollapse ? '64px' : '200px'" class="aside">
-            <div class="collapse-btn">
-                <el-button type="text" @click="layoutStore.toggleCollapse">
-                    <el-icon>
-                        <Fold v-if="!layoutStore.isCollapse" />
-                        <Expand v-else />
-                    </el-icon>
-                </el-button>
-            </div>
-            <el-menu :default-active="$route.path" :collapse="layoutStore.isCollapse" :router="true"
-                :collapse-transition="false" :unique-opened="true" :show-timeout="100" :hide-timeout="100"
-                :menu-trigger="'click'" :popper-class="'custom-menu'">
+        <el-aside width="200px" class="aside">
+            <el-menu :default-active="$route.path" :router="true" :collapse-transition="false" :unique-opened="true"
+                :show-timeout="100" :hide-timeout="100" :menu-trigger="'click'" :popper-class="'custom-menu'">
                 <el-menu-item index="/">
                     <el-icon>
                         <HomeFilled />
                     </el-icon>
-                    <span>首页</span>
+                    <span>城轨数据中台</span>
                 </el-menu-item>
 
-                <el-sub-menu>
+                <el-sub-menu index="/staff_improvement_analysis">
                     <template #title>
                         <el-icon>
                             <TrendCharts />
@@ -59,6 +48,12 @@ const layoutStore = useLayoutStore()
 </template>
 
 <style scoped>
+.h1 {
+    font-size: 20px;
+    color: #303133;
+    text-align: center;
+}
+
 .layout-container {
     height: 100vh;
 }
