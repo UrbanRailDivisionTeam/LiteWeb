@@ -1,95 +1,86 @@
 <script setup>
 import { RouterView } from 'vue-router'
-import { HomeFilled, Document, TrendCharts } from '@element-plus/icons-vue'
-import { useLayoutStore } from './stores/counter'
+import {
+    BookOutline as BookIcon,
+    HomeOutline as HomeIcon,
+    ChevronForward as ChevronForwardIcon,
+    ChevronBack as ChevronBackIcon
+} from '@vicons/ionicons5'
+import { NIcon } from 'naive-ui'
+import { ref, h } from 'vue'
+import { useRouter, useRoute } from 'vue-router'
+
+const router = useRouter()
+const route = useRoute()
+
+const isCollapse = ref(false)
+const handleCollapse = () => {
+    isCollapse.value = !isCollapse.value
+}
+
+function renderIcon(icon) {
+    return () => h(NIcon, null, { default: () => h(icon) })
+}
+
+function handleMenuUpdate(key) {
+    router.push(key)
+}
 </script>
 
 <template>
-    <el-container class="layout-container">
-        <el-aside width="200px" class="aside">
-            <el-menu :default-active="$route.path" :router="true" :collapse-transition="false" :unique-opened="true"
-                :show-timeout="100" :hide-timeout="100" :menu-trigger="'click'" :popper-class="'custom-menu'">
-                <el-menu-item index="/">
-                    <el-icon>
-                        <HomeFilled />
-                    </el-icon>
-                    <span>城轨数据中台</span>
-                </el-menu-item>
+    <n-message-provider>
+        <n-layout has-sider class="layout-container">
+            <n-layout-sider bordered collapse-mode="width" :root-indent="12" :index="10" :collapsed-width="64" :width="210"
+                show-trigger @collapse="handleCollapse" class="aside">
+                <n-menu :value="route.path" :collapsed-width="64" :collapsed-icon-size="22"
+                    :options="[
+                        {
+                            label: '城轨数据中台',
+                            key: '/',
+                            icon: renderIcon(HomeIcon)
+                        },
+                        {
+                            label: '全员型改善分析',
+                            key: '/staff_improvement_analysis',
+                            icon: renderIcon(BookIcon),
+                            children: [
+                                {
+                                    label: '指标完成情况',
+                                    key: '/staff_improvement_analysis/target_completion',
+                                    icon: renderIcon(BookIcon)
+                                },
+                                {
+                                    label: '评审完成情况',
+                                    key: '/staff_improvement_analysis/audit_completion',
+                                    icon: renderIcon(BookIcon)
+                                }
+                            ]
+                        }
+                    ]" @update:value="handleMenuUpdate" />
+            </n-layout-sider>
 
-                <el-sub-menu index="/staff_improvement_analysis">
-                    <template #title>
-                        <el-icon>
-                            <TrendCharts />
-                        </el-icon>
-                        <span>全员型改善分析</span>
-                    </template>
-                    <el-menu-item index="/staff_improvement_analysis/target_completion">
-                        <el-icon>
-                            <TrendCharts />
-                        </el-icon>
-                        <span>指标完成情况</span>
-                    </el-menu-item>
-                    <el-menu-item index="/staff_improvement_analysis/audit_completion">
-                        <el-icon>
-                            <Document />
-                        </el-icon>
-                        <span>评审完成情况</span>
-                    </el-menu-item>
-                </el-sub-menu>
-            </el-menu>
-        </el-aside>
-
-        <el-container>
-            <el-main>
-                <RouterView />
-            </el-main>
-        </el-container>
-    </el-container>
+            <n-layout>
+                <n-layout-content class="content">
+                    <RouterView />
+                </n-layout-content>
+            </n-layout>
+        </n-layout>
+    </n-message-provider>
 </template>
 
 <style scoped>
-.h1 {
-    font-size: 20px;
-    color: #303133;
-    text-align: center;
-}
-
 .layout-container {
     height: 100vh;
 }
 
-.aside {
-    background-color: #fff;
-    transition: width 0.1s;
-}
-
 .collapse-btn {
-    height: 40px;
+    height: 50px;
     display: flex;
     align-items: center;
     justify-content: center;
-    border-bottom: 1px solid #e6e6e6;
 }
 
-.collapse-btn .el-button {
-    font-size: 18px;
-    color: #303133;
-}
-
-.collapse-btn .el-button:hover {
-    color: #409eff;
-}
-
-.header {
-    background-color: #fff;
-    border-bottom: 1px solid #e6e6e6;
-    display: flex;
-    align-items: center;
-    padding: 0 20px;
-}
-
-.el-main {
+.content {
     background-color: #f0f2f5;
-    padding: 20px;
 }
 </style>
