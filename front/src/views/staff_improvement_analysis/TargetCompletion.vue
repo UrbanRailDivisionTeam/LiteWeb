@@ -5,13 +5,8 @@ import { getDepartmentStats, getLastUpdateTime } from '@/api/staffImprovement'
 import { useMessage } from 'naive-ui'
 
 const message = useMessage()
-const loading = ref(false)
-const departmentData = ref([])
-
 const lastUpdateTime = ref('2024-08-29 06:08:00')
 const selectedDepartment = ref('质量技术部')
-
-
 
 const charts = reactive([
     {
@@ -342,7 +337,6 @@ const formatPercent = (value) => {
 }
 
 const fetchData = async () => {
-    loading.value = true
     try {
         const [lastUpdateTimeData, departmentStatsData] = await Promise.all([
             getLastUpdateTime(),
@@ -356,15 +350,12 @@ const fetchData = async () => {
             departmentStats.length = 0
             // 添加新数据
             departmentStats.push(...departmentStatsData)
-            departmentData.value = departmentStatsData
         } else {
             message.error('获取部门数据格式错误')
         }
     } catch (error) {
         console.error('获取数据失败:', error)
         message.error('获取数据失败')
-    } finally {
-        loading.value = false
     }
 }
 
@@ -606,7 +597,7 @@ onBeforeUnmount(() => {
 
 <style scoped>
 .target-completion {
-    padding: 10px 10px 15px 15px;
+    padding: 30px;
 }
 
 .page-header {

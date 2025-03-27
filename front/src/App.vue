@@ -3,8 +3,7 @@ import { RouterView } from 'vue-router'
 import {
     BookOutline as BookIcon,
     HomeOutline as HomeIcon,
-    ChevronForward as ChevronForwardIcon,
-    ChevronBack as ChevronBackIcon
+    SettingsOutline as SettingsIcon
 } from '@vicons/ionicons5'
 import { NIcon } from 'naive-ui'
 import { ref, h } from 'vue'
@@ -30,36 +29,51 @@ function handleMenuUpdate(key) {
 <template>
     <n-message-provider>
         <n-layout has-sider class="layout-container">
-            <n-layout-sider bordered collapse-mode="width" :root-indent="12" :index="10" :collapsed-width="64" :width="210"
-                show-trigger @collapse="handleCollapse" class="aside">
-                <n-menu :value="route.path" :collapsed-width="64" :collapsed-icon-size="22"
-                    :options="[
-                        {
-                            label: '城轨数据中台',
-                            key: '/',
-                            icon: renderIcon(HomeIcon)
-                        },
-                        {
-                            label: '全员型改善分析',
-                            key: '/staff_improvement_analysis',
-                            icon: renderIcon(BookIcon),
-                            children: [
-                                {
-                                    label: '指标完成情况',
-                                    key: '/staff_improvement_analysis/target_completion',
-                                    icon: renderIcon(BookIcon)
-                                },
-                                {
-                                    label: '评审完成情况',
-                                    key: '/staff_improvement_analysis/audit_completion',
-                                    icon: renderIcon(BookIcon)
-                                }
-                            ]
-                        }
-                    ]" @update:value="handleMenuUpdate" />
+            <n-layout-sider bordered collapse-mode="width" :collapsed-width="64" :width="210" show-trigger @collapse="handleCollapse" class="aside">
+                <n-menu :value="route.path" :collapsed-width="64" :collapsed-icon-size="22" :indent="16" :options="[
+                    {
+                        label: '城轨数据中台',
+                        key: '/',
+                        icon: renderIcon(HomeIcon)
+                    },
+                    {
+                        label: '全员型改善',
+                        key: '/staff_improvement_analysis',
+                        icon: renderIcon(BookIcon),
+                        children: [
+                            {
+                                label: '指标完成情况',
+                                key: '/staff_improvement_analysis/target_completion',
+                                icon: renderIcon(BookIcon)
+                            },
+                            {
+                                label: '评审完成情况',
+                                key: '/staff_improvement_analysis/audit_completion',
+                                icon: renderIcon(BookIcon)
+                            }
+                        ]
+                    },
+                    {
+                        label: '综合管理',
+                        key: '/comprehensive_management',
+                        icon: renderIcon(SettingsIcon),
+                        children: [
+                            {
+                                label: '系统设置',
+                                key: '/comprehensive_management/system_settings',
+                                icon: renderIcon(SettingsIcon)
+                            },
+                            {
+                                label: '用户管理',
+                                key: '/comprehensive_management/user_management',
+                                icon: renderIcon(SettingsIcon)
+                            }
+                        ]
+                    }
+                ]" @update:value="handleMenuUpdate" />
             </n-layout-sider>
 
-            <n-layout>
+            <n-layout class="content">
                 <n-layout-content class="content">
                     <RouterView />
                 </n-layout-content>
