@@ -372,6 +372,17 @@ const initDeptChart = (deptKey) => {
     const completionRates = currentDept.sub.map((item) => item.rate)
     const targetDiff = currentDept.sub.map((item) => item.target - item.completed)
 
+    // 计算目标差值的最大值和最小值
+    const maxDiff = Math.max(...targetDiff)
+    const minDiff = Math.min(...targetDiff)
+    
+    // 计算合适的上下限，留出一定余量
+    const yAxisMax = Math.ceil(maxDiff * 1.2)
+    const yAxisMin = Math.floor(minDiff * 1.2)
+    
+    // 计算合适的间隔
+    const interval = Math.ceil((yAxisMax - yAxisMin) / 5)
+
     const option = {
         tooltip: {
             trigger: 'axis',
@@ -441,9 +452,9 @@ const initDeptChart = (deptKey) => {
             {
                 type: 'value',
                 gridIndex: 1,
-                min: -20,
-                max: 100,
-                interval: 20,
+                min: yAxisMin,
+                max: yAxisMax,
+                interval: interval,
                 axisLabel: {
                     formatter: '{value}',
                 },
