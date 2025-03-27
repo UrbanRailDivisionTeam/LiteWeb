@@ -5,32 +5,32 @@ const request = axios.create({
     baseURL: '/api', // API 请求的默认前缀
     timeout: 10000, // 请求超时时间
     headers: {
-        'Content-Type': 'application/json'
-    }
+        'Content-Type': 'application/json',
+    },
 })
 
 // 请求拦截器
 request.interceptors.request.use(
-    config => {
+    (config) => {
         // 在发送请求之前做些什么
         return config
     },
-    error => {
+    (error) => {
         // 对请求错误做些什么
         return Promise.reject(error)
-    }
+    },
 )
 
 // 响应拦截器
 request.interceptors.response.use(
-    response => {
+    (response) => {
         // 对响应数据做点什么
         return response.data
     },
-    error => {
+    (error) => {
         // 对响应错误做点什么
         return Promise.reject(error)
-    }
+    },
 )
 
-export default request 
+export default request

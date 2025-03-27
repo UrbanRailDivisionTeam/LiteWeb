@@ -4,7 +4,7 @@ import request from '@/utils/request'
 export function getDepartmentStats() {
     return request({
         url: '/staff_improvement_analysis/target_completion',
-        method: 'get'
+        method: 'get',
     })
 }
 
@@ -12,6 +12,6 @@ export function getDepartmentStats() {
 export function getLastUpdateTime() {
     return request({
         url: '/staff_improvement_analysis/last_update_time',
-        method: 'get'
+        method: 'get',
     })
-} 
+}

@@ -5,6 +5,9 @@ import { getDepartmentStats, getLastUpdateTime } from '@/api/staffImprovement'
 import { useMessage } from 'naive-ui'
 
 const message = useMessage()
+const loading = ref(false)
+const departmentData = ref([])
+
 const lastUpdateTime = ref('2024-08-29 06:08:00')
 const selectedDepartment = ref('质量技术部')
 
@@ -33,7 +36,7 @@ const charts = reactive([
         id: '交车车间',
         dom_name: 'deliveryChart',
         chart: null,
-    }
+    },
 ])
 const chartObserver = ref(null)
 const departmentStats = reactive([
@@ -114,8 +117,8 @@ const departmentStats = reactive([
                 rate: 100,
                 completed: 0,
                 target: 0,
-            }
-        ]
+            },
+        ],
     },
     {
         m_name: '项目工程部',
@@ -152,8 +155,8 @@ const departmentStats = reactive([
                 rate: 100,
                 completed: 0,
                 target: 0,
-            }
-        ]
+            },
+        ],
     },
     {
         m_name: '综合管理部',
@@ -184,8 +187,8 @@ const departmentStats = reactive([
                 rate: 100,
                 completed: 0,
                 target: 0,
-            }
-        ]
+            },
+        ],
     },
     {
         m_name: '总成车间',
@@ -270,8 +273,8 @@ const departmentStats = reactive([
                 rate: 100,
                 completed: 0,
                 target: 0,
-            }
-        ]
+            },
+        ],
     },
     {
         m_name: '交车车间',
@@ -326,9 +329,9 @@ const departmentStats = reactive([
                 rate: 100,
                 completed: 0,
                 target: 0,
-            }
-        ]
-    }
+            },
+        ],
+    },
 ])
 
 // 格式化百分比
@@ -338,12 +341,9 @@ const formatPercent = (value) => {
 
 const fetchData = async () => {
     try {
-        const [lastUpdateTimeData, departmentStatsData] = await Promise.all([
-            getLastUpdateTime(),
-            getDepartmentStats()
-        ])
+        const [lastUpdateTimeData, departmentStatsData] = await Promise.all([getLastUpdateTime(), getDepartmentStats()])
         lastUpdateTime.value = lastUpdateTimeData.lastUpdateTime
-        
+
         // 确保 departmentStatsData 是数组
         if (Array.isArray(departmentStatsData)) {
             // 清空现有数据
@@ -363,16 +363,27 @@ const initDeptChart = (deptKey) => {
     const chartDom = document.getElementById(deptKey)
     const myChart = echarts.init(chartDom)
 
-    const currentDept = departmentStats.find(dept => {
-        const chartItem = charts.find(item => item.dom_name === deptKey)
+    const currentDept = departmentStats.find((dept) => {
+        const chartItem = charts.find((item) => item.dom_name === deptKey)
         return chartItem && chartItem.id === dept.m_name
     })
 
     if (!currentDept) return myChart
 
-    const subDepts = currentDept.sub.map(item => item.m_name)
-    const completionRates = currentDept.sub.map(item => item.rate)
-    const targetDiff = currentDept.sub.map(item => item.target - item.completed)
+    const subDepts = currentDept.sub.map((item) => item.m_name)
+    const completionRates = currentDept.sub.map((item) => item.rate)
+    const targetDiff = currentDept.sub.map((item) => item.target - item.completed)
+
+    // 计算目标差值的最大值和最小值
+    const maxDiff = Math.max(...targetDiff)
+    const minDiff = Math.min(...targetDiff)
+    
+    // 计算合适的上下限，留出一定余量
+    const yAxisMax = Math.ceil(maxDiff * 1.2)
+    const yAxisMin = Math.floor(minDiff * 1.2)
+    
+    // 计算合适的间隔
+    const interval = Math.ceil((yAxisMax - yAxisMin) / 5)
 
     const option = {
         tooltip: {
@@ -386,65 +397,74 @@ const initDeptChart = (deptKey) => {
                 } else {
                     return `${params[0].name}<br/>${params[0].seriesName}：${params[0].value}个`
                 }
-            }
+            },
         },
         legend: {
             data: ['完成率', '距离目标差值'],
             top: 10,
         },
-        grid: [{
-            left: '3%',
-            right: '52%',
-            bottom: '3%',
-            containLabel: true
-        }, {
-            left: '52%',
-            right: '3%',
-            bottom: '3%',
-            containLabel: true
-        }],
-        xAxis: [{
-            type: 'category',
-            gridIndex: 0,
-            data: subDepts,
-            axisLabel: {
-                interval: 0,
-                rotate: 30,
+        grid: [
+            {
+                left: '3%',
+                right: '52%',
+                bottom: '3%',
+                containLabel: true,
             },
-        }, {
-            type: 'category',
-            gridIndex: 1,
-            data: subDepts,
-            axisLabel: {
-                interval: 0,
-                rotate: 30,
+            {
+                left: '52%',
+                right: '3%',
+                bottom: '3%',
+                containLabel: true,
             },
-        }],
-        yAxis: [{
-            type: 'value',
-            gridIndex: 0,
-            min: 0,
-            max: 100,
-            interval: 20,
-            axisLabel: {
-                formatter: '{value}%',
+        ],
+        xAxis: [
+            {
+                type: 'category',
+                gridIndex: 0,
+                data: subDepts,
+                axisLabel: {
+                    interval: 0,
+                    rotate: 30,
+                },
             },
-            name: '完成率',
-            nameLocation: 'middle',
-            nameGap: 40,
-        }, {
-            type: 'value',
-            gridIndex: 1,
-            min: -20,
-            max: 100,
-            interval: 20,
-            axisLabel: {
-                formatter: '{value}',
+            {
+                type: 'category',
+                gridIndex: 1,
+                data: subDepts,
+                axisLabel: {
+                    interval: 0,
+                    rotate: 30,
+                },
             },
-            name: '提案数量差值',
-            nameLocation: 'middle',
-            nameGap: 40,
-        }],
+        ],
+        yAxis: [
+            {
+                type: 'value',
+                gridIndex: 0,
+                min: 0,
+                max: 100,
+                interval: 20,
+                axisLabel: {
+                    formatter: '{value}%',
+                },
+                name: '完成率',
+                nameLocation: 'middle',
+                nameGap: 40,
+            },
+            {
+                type: 'value',
+                gridIndex: 1,
+                min: yAxisMin,
+                max: yAxisMax,
+                interval: interval,
+                axisLabel: {
+                    formatter: '{value}',
+                },
+                name: '提案数量差值',
+                nameLocation: 'middle',
+                nameGap: 40,
+            },
+        ],
         series: [
             {
                 name: '完成率',
@@ -472,11 +492,11 @@ const initDeptChart = (deptKey) => {
                         } else {
                             return '#909399'
                         }
-                    }
+                    },
                 },
                 barWidth: '30%',
-            }
-        ]
+            },
+        ],
     }
 
     myChart.setOption(option)
@@ -484,16 +504,16 @@ const initDeptChart = (deptKey) => {
 }
 
 const initResizeObserver = () => {
-    chartObserver.value = new ResizeObserver(entries => {
+    chartObserver.value = new ResizeObserver((entries) => {
         for (const entry of entries) {
-            const chartItem = charts.find(item => item.dom_name === entry.target.id)
+            const chartItem = charts.find((item) => item.dom_name === entry.target.id)
             if (chartItem && chartItem.chart) {
                 chartItem.chart.resize()
             }
         }
     })
 
-    charts.forEach(chartItem => {
+    charts.forEach((chartItem) => {
         const chartDom = document.getElementById(chartItem.dom_name)
         if (chartDom) {
             chartObserver.value.observe(chartDom)
@@ -503,7 +523,7 @@ const initResizeObserver = () => {
 
 watch(selectedDepartment, (newDept) => {
     nextTick(() => {
-        charts.forEach(chartItem => {
+        charts.forEach((chartItem) => {
             if (chartItem.id !== newDept && chartItem.chart) {
                 chartItem.chart.dispose()
                 chartItem.chart = null
@@ -525,7 +545,7 @@ onMounted(async () => {
     await fetchData()
     nextTick(() => {
         initResizeObserver()
-        const currentChart = charts.find(item => item.id === selectedDepartment.value)
+        const currentChart = charts.find((item) => item.id === selectedDepartment.value)
         if (currentChart) {
             const chartDom = document.getElementById(currentChart.dom_name)
             if (chartDom) {
@@ -540,7 +560,7 @@ onBeforeUnmount(() => {
         chartObserver.value.disconnect()
         chartObserver.value = null
     }
-    charts.forEach(chartItem => {
+    charts.forEach((chartItem) => {
         if (chartItem.chart) {
             chartItem.chart.dispose()
             chartItem.chart = null
@@ -560,15 +580,11 @@ onBeforeUnmount(() => {
 
             <div class="statistics-cards">
                 <n-card class="stat-card" v-for="dept in departmentStats" :key="dept.m_name">
-                    <div class="stat-title">
-                        {{ dept.m_name }}改善指标
-                    </div>
-                    <div class="stat-value" :class="{ 'completed': dept.rate >= 100 }">
+                    <div class="stat-title">{{ dept.m_name }}改善指标</div>
+                    <div class="stat-value" :class="{ completed: dept.rate >= 100 }">
                         {{ formatPercent(dept.rate) }}
                     </div>
-                    <div class="stat-progress">
-                        已完成改善数 {{ dept.completed }} / 部门指标 {{ dept.target }}
-                    </div>
+                    <div class="stat-progress">已完成改善数 {{ dept.completed }} / 部门指标 {{ dept.target }}</div>
                 </n-card>
             </div>
         </div>
@@ -648,7 +664,7 @@ onBeforeUnmount(() => {
 }
 
 .stat-value.completed {
-    color: #67C23A;
+    color: #67c23a;
 }
 
 .stat-progress {
