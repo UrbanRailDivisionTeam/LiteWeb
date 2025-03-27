@@ -11,6 +11,7 @@ async def get_departmentStats():
     res = CLIENT["lite_web"]["staff_improvement_analysis"].find({}, {'_id': 0})
     for ch in res:
         temp_list.append(ch)
+    temp_list.sort(key=lambda x: x['m_name'])
     return temp_list
 
 

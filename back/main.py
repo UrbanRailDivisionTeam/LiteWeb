@@ -11,7 +11,7 @@ app = FastAPI()
 app.include_router(target_completion.router)
 
 # 先挂载静态文件目录
-path = os.path.join(os.path.abspath(__file__), "static", "assets")
+path = os.path.join(os.path.abspath(__file__), "..", "static", "assets")
 app.mount("/assets", StaticFiles(directory=path), name="dist")
 
 html_content = ''
