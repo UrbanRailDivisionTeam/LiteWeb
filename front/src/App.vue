@@ -2,8 +2,12 @@
 import { RouterView } from 'vue-router'
 import {
     BookOutline as BookIcon,
+    CropOutline as CropIcon,
     HomeOutline as HomeIcon,
-    SettingsOutline as SettingsIcon
+    ConstructOutline as ConstructIcon,
+    SettingsOutline as SettingsIcon,
+    TrainOutline as TrainIcon,
+    ChatbubbleOutline as ChatIcon
 } from '@vicons/ionicons5'
 import { NIcon } from 'naive-ui'
 import { ref, h } from 'vue'
@@ -39,36 +43,67 @@ function handleMenuUpdate(key) {
                     {
                         label: '全员型改善',
                         key: '/staff_improvement_analysis',
-                        icon: renderIcon(BookIcon),
+                        icon: renderIcon(CropIcon),
                         children: [
                             {
                                 label: '指标完成情况',
                                 key: '/staff_improvement_analysis/target_completion',
-                                icon: renderIcon(BookIcon)
                             },
                             {
                                 label: '评审完成情况',
                                 key: '/staff_improvement_analysis/audit_completion',
-                                icon: renderIcon(BookIcon)
                             }
                         ]
                     },
                     {
                         label: '综合管理',
                         key: '/comprehensive_management',
-                        icon: renderIcon(SettingsIcon),
+                        icon: renderIcon(ConstructIcon),
                         children: [
                             {
-                                label: '系统设置',
-                                key: '/comprehensive_management/system_settings',
-                                icon: renderIcon(SettingsIcon)
+                                label: '人员效能',
+                                key: '/comprehensive_management/personnel_effectiveness',
                             },
                             {
-                                label: '用户管理',
-                                key: '/comprehensive_management/user_management',
-                                icon: renderIcon(SettingsIcon)
+                                label: '制造差旅',
+                                key: '/comprehensive_management/business_trip',
                             }
                         ]
+                    },
+                    {
+                        label: '生产指挥中心',
+                        key: '/production_command_center',
+                        icon: renderIcon(TrainIcon),
+                        children: [
+                            {
+                                label: '计划排程',
+                                key: '/production_command_center/planning_schedule',
+                            },
+                            {
+                                label: '相关方安全',
+                                key: '/production_command_center/security_of_interested_parties',
+                            }
+                        ]
+                    },
+                    {
+                        label: '业联系统',
+                        key: '/trade_federation',
+                        icon: renderIcon(ChatIcon),
+                        children: [
+                            {
+                                label: '设计变更成本',
+                                key: '/trade_federation/design_change_cost',
+                            },
+                            {
+                                label: '设计变更流转统计',
+                                key: '/trade_federation/design_change_conversion',
+                            }
+                        ]
+                    },
+                    {
+                        label: '城轨通讯录',
+                        key: '/metro_phone_directory',
+                        icon: renderIcon(BookIcon),
                     }
                 ]" @update:value="handleMenuUpdate" />
             </n-layout-sider>

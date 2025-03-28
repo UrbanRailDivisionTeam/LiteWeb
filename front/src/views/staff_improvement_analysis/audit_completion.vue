@@ -111,9 +111,6 @@ const formatPercent = (value) => {
 <style scoped>
 .target-completion {
     padding: 30px;
-    height: 100vh;
-    display: flex;
-    flex-direction: column;
 }
 
 .page-header {
@@ -140,7 +137,6 @@ const formatPercent = (value) => {
 .statistics-cards {
     display: flex;
     gap: 20px;
-    margin-bottom: 30px;
 }
 
 .stat-card {
@@ -159,7 +155,6 @@ const formatPercent = (value) => {
 .stat-value {
     font-size: 36px;
     font-weight: 500;
-    margin: 16px 0;
     color: #303133;
 }
 
