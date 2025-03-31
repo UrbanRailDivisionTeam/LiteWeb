@@ -9,7 +9,7 @@ const subDepartments = ref([
     { name: '技术组', rate: 95, completed: 19, target: 20 },
     { name: '检测组', rate: 88, completed: 22, target: 25 },
     { name: '标准组', rate: 100, completed: 15, target: 15 },
-    { name: '计量组', rate: 92, completed: 23, target: 25 }
+    { name: '计量组', rate: 92, completed: 23, target: 25 },
 ])
 
 const departmentStats = reactive([
@@ -18,36 +18,36 @@ const departmentStats = reactive([
         rate: 100,
         completed: 0,
         target: 0,
-        sub: []
+        sub: [],
     },
     {
         m_name: '项目工程部',
         rate: 100,
         completed: 0,
         target: 0,
-        sub: []
+        sub: [],
     },
     {
         m_name: '综合管理部',
         rate: 100,
         completed: 0,
         target: 0,
-        sub: []
+        sub: [],
     },
     {
         m_name: '总成车间',
         rate: 100,
         completed: 0,
         target: 0,
-        sub: []
+        sub: [],
     },
     {
         m_name: '交车车间',
         rate: 100,
         completed: 0,
         target: 0,
-        sub: []
-    }
+        sub: [],
+    },
 ])
 
 // 格式化百分比
@@ -67,15 +67,11 @@ const formatPercent = (value) => {
 
             <div class="statistics-cards">
                 <n-card class="stat-card" v-for="dept in departmentStats" :key="dept.m_name">
-                    <div class="stat-title">
-                        {{ dept.m_name }}审核完成率
-                    </div>
-                    <div class="stat-value" :class="{ 'completed': dept.rate >= 100 }">
+                    <div class="stat-title">{{ dept.m_name }}审核完成率</div>
+                    <div class="stat-value" :class="{ completed: dept.rate >= 100 }">
                         {{ formatPercent(dept.rate) }}
                     </div>
-                    <div class="stat-progress">
-                        已审核提案数 {{ dept.completed }} / 已提交提案数 {{ dept.target }}
-                    </div>
+                    <div class="stat-progress">已审核提案数 {{ dept.completed }} / 已提交提案数 {{ dept.target }}</div>
                 </n-card>
             </div>
         </div>
@@ -95,12 +91,10 @@ const formatPercent = (value) => {
                 <template #default="{ item }">
                     <n-card class="sub-dept-card">
                         <div class="sub-dept-title">{{ item.name }}</div>
-                        <div class="sub-dept-value" :class="{ 'completed': item.rate >= 100 }">
+                        <div class="sub-dept-value" :class="{ completed: item.rate >= 100 }">
                             {{ formatPercent(item.rate) }}
                         </div>
-                        <div class="sub-dept-progress">
-                            已审核提案数 {{ item.completed }} / 已提交提案数 {{ item.target }}
-                        </div>
+                        <div class="sub-dept-progress">已审核提案数 {{ item.completed }} / 已提交提案数 {{ item.target }}</div>
                     </n-card>
                 </template>
             </n-virtual-list>
@@ -159,7 +153,7 @@ const formatPercent = (value) => {
 }
 
 .stat-value.completed {
-    color: #67C23A;
+    color: #67c23a;
 }
 
 .stat-progress {
@@ -219,7 +213,7 @@ const formatPercent = (value) => {
 }
 
 .sub-dept-value.completed {
-    color: #67C23A;
+    color: #67c23a;
 }
 
 .sub-dept-progress {

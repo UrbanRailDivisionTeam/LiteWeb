@@ -397,18 +397,18 @@ const initDeptChart = (deptKey) => {
                     return `${params[0].name}<br/>${params[0].seriesName}：${params[0].value}%`
                 } else if (params[0].seriesName === '已完成数量') {
                     // 获取堆叠柱状图的两个系列数据
-                    const completed = params[0].value;
-                    const diff = params.length > 1 ? params[1].value : 0;
-                    return `${params[0].name}<br/>已完成：${completed}个<br/>目标总数：${completed + diff}个<br/>差值：${diff}个`;
+                    const completed = params[0].value
+                    const diff = params.length > 1 ? params[1].value : 0
+                    return `${params[0].name}<br/>已完成：${completed}个<br/>目标总数：${completed + diff}个<br/>差值：${diff}个`
                 } else {
-                    return `${params[0].name}<br/>${params[0].seriesName}：${params[0].value}个`;
+                    return `${params[0].name}<br/>${params[0].seriesName}：${params[0].value}个`
                 }
             },
         },
         legend: {
             data: ['完成率', '已完成数量', '距离目标差值'],
             bottom: 0,
-            left: 'center'
+            left: 'center',
         },
         grid: [
             {
@@ -464,8 +464,8 @@ const initDeptChart = (deptKey) => {
                 type: 'value',
                 gridIndex: 1,
                 min: 0,
-                max: Math.max(...currentDept.sub.map(item => item.target)) * 1.2,
-                interval: Math.ceil(Math.max(...currentDept.sub.map(item => item.target)) / 5),
+                max: Math.max(...currentDept.sub.map((item) => item.target)) * 1.2,
+                interval: Math.ceil(Math.max(...currentDept.sub.map((item) => item.target)) / 5),
                 axisLabel: {
                     formatter: '{value}',
                 },
@@ -492,7 +492,7 @@ const initDeptChart = (deptKey) => {
                 xAxisIndex: 1,
                 yAxisIndex: 1,
                 stack: '总量',
-                data: currentDept.sub.map(item => item.completed),
+                data: currentDept.sub.map((item) => item.completed),
                 itemStyle: {
                     color: '#67C23A',
                 },
@@ -543,7 +543,7 @@ const initResizeObserver = () => {
 
 watch(selectedDepartment, (newDept) => {
     // 更新当前选中部门的组室数据
-    const selectedDeptData = departmentStats.find(dept => dept.m_name === newDept)
+    const selectedDeptData = departmentStats.find((dept) => dept.m_name === newDept)
     if (selectedDeptData && selectedDeptData.sub) {
         currentSubDepartments.value = selectedDeptData.sub
     } else {
@@ -572,7 +572,7 @@ watch(selectedDepartment, (newDept) => {
 onMounted(async () => {
     await fetchData()
     // 初始化加载当前选中部门的组室数据
-    const selectedDeptData = departmentStats.find(dept => dept.m_name === selectedDepartment.value)
+    const selectedDeptData = departmentStats.find((dept) => dept.m_name === selectedDepartment.value)
     if (selectedDeptData && selectedDeptData.sub) {
         currentSubDepartments.value = selectedDeptData.sub
     }

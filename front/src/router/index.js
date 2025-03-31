@@ -48,6 +48,11 @@ const router = createRouter({
             name: '设计变更流转统计',
             component: () => import('../views/trade_federation/design_change_conversion.vue'),
         },
+        {
+            path: '/metro_phone_directory',
+            name: '城轨通讯录',
+            component: () => import('../views/metro_phone_directory.vue'),
+        },
     ],
 })
 
