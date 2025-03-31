@@ -5,8 +5,6 @@ import { getDepartmentStats, getLastUpdateTime } from '@/api/staffImprovement'
 import { useMessage } from 'naive-ui'
 
 const message = useMessage()
-const loading = ref(false)
-const departmentData = ref([])
 
 const lastUpdateTime = ref('2024-08-29 06:08:00')
 const selectedDepartment = ref('质量技术部')

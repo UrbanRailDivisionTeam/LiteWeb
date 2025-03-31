@@ -36,7 +36,7 @@ const handleExportExcel = () => {
 <template>
     <main class="home-container">
         <!-- 欢迎语 -->
-        <section class="welcome-section">
+        <section>
             <n-h1>欢迎使用城轨数据中台---BI看板模块</n-h1>
             <n-h2>在左侧选择您想要查看的分析展现</n-h2>
             <n-h2>在下方选择想要导出的数据</n-h2>
@@ -69,6 +69,58 @@ const handleExportExcel = () => {
                         </template>
                         导出城轨事业部异常明细情况
                     </n-button>
+                    <n-button type="primary" @click="handleExportExcel" class="export-btn">
+                        <template #icon>
+                            <ArrowDownloadIcon />
+                        </template>
+                        导出质量技术部组室和项目的异常情况
+                    </n-button>
+                </n-collapse-item>
+                <n-collapse-item title="差旅数据导出" name="2">
+                    <n-button type="primary" @click="handleExportExcel" class="export-btn">
+                        <template #icon>
+                            <ArrowDownloadIcon />
+                        </template>
+                        导出城轨事业部制造差旅明细
+                    </n-button>
+                </n-collapse-item>
+                <n-collapse-item title="工时数据导出" name="3">
+                    <n-button type="primary" @click="handleExportExcel" class="export-btn">
+                        <template #icon>
+                            <ArrowDownloadIcon />
+                        </template>
+                        导出城轨事业部人员工时明细
+                    </n-button>
+                </n-collapse-item>
+                <n-collapse-item title="考勤数据导出" name="4">
+                    <n-button type="primary" @click="handleExportExcel" class="export-btn">
+                        <template #icon>
+                            <ArrowDownloadIcon />
+                        </template>
+                        导出城轨事业部考勤明细
+                    </n-button>
+                    <n-button type="primary" @click="handleExportExcel" class="export-btn">
+                        <template #icon>
+                            <ArrowDownloadIcon />
+                        </template>
+                        导出城轨事业部打卡记录明细
+                    </n-button>
+                </n-collapse-item>
+                <n-collapse-item title="业联数据导出" name="5">
+                    <n-button type="primary" @click="handleExportExcel" class="export-btn">
+                        <template #icon>
+                            <ArrowDownloadIcon />
+                        </template>
+                        导出当前未完业联明细
+                    </n-button>
+                </n-collapse-item>
+                <n-collapse-item title="通讯录导出" name="6">
+                    <n-button type="primary" @click="handleExportExcel" class="export-btn">
+                        <template #icon>
+                            <ArrowDownloadIcon />
+                        </template>
+                        导出城轨事业部人员相关信息明细
+                    </n-button>
                 </n-collapse-item>
             </n-collapse>
         </section>
@@ -83,14 +135,9 @@ const handleExportExcel = () => {
     min-height: 100%;
 }
 
-.welcome-section {
-    text-align: left;
-    margin-bottom: 3rem;
-}
-
 .export-collapse {
-    margin-top: 2rem;
     max-width: 600px;
+    margin-top: 2rem;
 }
 
 .export-collapse :deep(.n-collapse-item__header) {
@@ -98,10 +145,18 @@ const handleExportExcel = () => {
     font-weight: 500;
 }
 
+.export-collapse :deep(.n-collapse-item__content-wrapper) {
+    max-height: 300px;
+    overflow-y: auto;
+}
+
+.export-collapse :deep(.n-collapse-item__content) {
+    padding: 16px;
+}
+
 .export-btn {
     display: flex;
     align-items: center;
-    gap: 4px;
     margin-bottom: 1rem;
 }
 </style>

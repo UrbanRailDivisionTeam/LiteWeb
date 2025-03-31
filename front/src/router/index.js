@@ -6,7 +6,7 @@ const router = createRouter({
         {
             path: '/',
             name: 'home',
-            component: () => import('../views/HomeView.vue'),
+            component: () => import('../views/home_view.vue'),
         },
         {
             path: '/staff_improvement_analysis/target_completion',
@@ -24,9 +24,14 @@ const router = createRouter({
             component: () => import('../views/comprehensive_management/personnel_effectiveness.vue'),
         },
         {
-            path: '/comprehensive_management/business_trip',
-            name: '制造差旅',
-            component: () => import('../views/comprehensive_management/business_trip.vue'),
+            path: '/comprehensive_management/business_trip/business_trip_map',
+            name: '制造差旅地图',
+            component: () => import('../views/comprehensive_management/business_trip/business_trip_map.vue'),
+        },
+        {
+            path: '/comprehensive_management/business_trip/business_trip_page',
+            name: '制造差旅指标与详情看板',
+            component: () => import('../views/comprehensive_management/business_trip/business_trip_page.vue'),
         },
         {
             path: '/production_command_center/planning_schedule',
@@ -49,9 +54,9 @@ const router = createRouter({
             component: () => import('../views/trade_federation/design_change_conversion.vue'),
         },
         {
-            path: '/metro_phone_directory',
+            path: '/metro_address_directory',
             name: '城轨通讯录',
-            component: () => import('../views/metro_phone_directory.vue'),
+            component: () => import('../views/metro_address_directory.vue'),
         },
     ],
 })
