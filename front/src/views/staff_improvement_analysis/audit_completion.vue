@@ -1,6 +1,6 @@
 <script setup>
 import { ref, reactive, onMounted, onBeforeUnmount, watch, nextTick } from 'vue'
-import { NCard, NRadioGroup, NRadioButton } from 'naive-ui'
+import { NCard, NRadioGroup, NRadioButton, NDataTable } from 'naive-ui'
 import * as echarts from 'echarts'
 
 const lastUpdateTime = ref('2024-08-29 06:08:00')
@@ -226,17 +226,8 @@ onBeforeUnmount(() => {
                     </n-radio-group>
                 </div>
             </div>
-            <div class="list-container">
-                <n-card v-for="item in subDepartments" :key="item.name" class="sub-dept-card">
-                    <div class="sub-dept-content">
-                        <div class="sub-dept-info">
-                            <div class="sub-dept-title">{{ item.name }}</div>
-                            <div class="sub-dept-progress">已审核提案数 {{ item.completed }} / 已提交提案数 {{ item.target }}</div>
-                        </div>
-                        <div class="bar-chart"></div>
-                    </div>
-                </n-card>
-            </div>
+            <n-data-table :bordered="false" :single-line="false" :columns="columns" :data="data"
+                :pagination="pagination" />
         </n-card>
     </div>
 </template>
@@ -327,45 +318,5 @@ onBeforeUnmount(() => {
     display: flex;
     gap: 12px;
     align-items: center;
-}
-
-.list-container {
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
-}
-
-.sub-dept-card {
-    margin-bottom: 0;
-}
-
-.sub-dept-content {
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    padding: 8px 0;
-}
-
-.sub-dept-info {
-    flex: 1;
-}
-
-.sub-dept-title {
-    color: #303133;
-    font-size: 16px;
-    font-weight: 500;
-    margin-bottom: 8px;
-}
-
-.sub-dept-progress {
-    color: #606266;
-    font-size: 14px;
-}
-
-.bar-chart {
-    width: 300px;
-    height: 60px;
-    margin-left: 20px;
-    position: relative;
 }
 </style>
