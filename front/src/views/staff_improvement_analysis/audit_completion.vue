@@ -226,8 +226,7 @@ onBeforeUnmount(() => {
                     </n-radio-group>
                 </div>
             </div>
-            <n-data-table :bordered="false" :single-line="false" :columns="columns" :data="data"
-                :pagination="pagination" />
+            <n-data-table :bordered="false" :single-line="false" :columns="columns" :data="data" :pagination="pagination" />
         </n-card>
     </div>
 </template>
