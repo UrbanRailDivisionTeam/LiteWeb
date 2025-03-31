@@ -45,7 +45,7 @@
 <script setup>
 import { ref, onMounted, onUnmounted } from 'vue'
 import * as echarts from 'echarts'
-import { getRelatedPartyData } from '@/api/relatedParty'
+import { getRelatedPartyData } from '@/api/related_party'
 
 // 数字卡片数据
 const cards = ref([
