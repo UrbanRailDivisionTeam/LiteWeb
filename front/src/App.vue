@@ -23,10 +23,6 @@ const handleCollapse = () => {
 function renderIcon(icon) {
     return () => h(NIcon, null, { default: () => h(icon) })
 }
-
-function handleMenuUpdate(key) {
-    router.push(key)
-}
 </script>
 
 <template>
@@ -120,7 +116,7 @@ function handleMenuUpdate(key) {
                             icon: renderIcon(BookIcon),
                         },
                     ]"
-                    @update:value="handleMenuUpdate"
+                    @update:value="router.push"
                 />
             </n-layout-sider>
 

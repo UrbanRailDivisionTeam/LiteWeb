@@ -1,35 +1,14 @@
 <script setup>
 import { NButton, NCollapse, NCollapseItem } from 'naive-ui'
 import { ArrowDownOutline as ArrowDownloadIcon } from '@vicons/ionicons5'
-import { exportAuditCompletionExcel } from '@/utils/excel_export'
+import { getImprovementDetailsColumns, getImprovementDetailsData} from '@/api/staff_improvement'
+import { exportExcel } from '@/utils/excel_export'
 
-// 模拟数据，实际应该从API获取
-const mockData = [
-    {
-        m_name: '质量技术部',
-        rate: 95.2,
-        completed: 60,
-        target: 63,
-        sub: [
-            { m_name: '质量保证组', rate: 100, completed: 10, target: 10 },
-            { m_name: '交付质量组', rate: 95, completed: 19, target: 20 },
-            { m_name: '过程质量组', rate: 88, completed: 22, target: 25 },
-        ],
-    },
-    {
-        m_name: '项目工程部',
-        rate: 97.3,
-        completed: 36,
-        target: 37,
-        sub: [
-            { m_name: '交车进程组', rate: 100, completed: 8, target: 8 },
-            { m_name: '生产管理组', rate: 93, completed: 14, target: 15 },
-        ],
-    },
-]
-
-const handleExportExcel = () => {
-    exportAuditCompletionExcel(mockData)
+// 生成改善明细的excel
+const handleStaffImprovementAnalysisExportExcel = async () => {
+    const columns = await getImprovementDetailsColumns()
+    const data = await getImprovementDetailsData()
+    exportExcel("全员型改善明细", columns, data)
 }
 </script>
 
@@ -43,7 +22,7 @@ const handleExportExcel = () => {
 
             <n-collapse class="export-collapse">
                 <n-collapse-item title="改善数据导出" name="0">
-                    <n-button type="primary" @click="handleExportExcel" class="export-btn">
+                    <n-button type="primary" @click="handleStaffImprovementAnalysisExportExcel" class="export-btn">
                         <template #icon>
                             <ArrowDownloadIcon />
                         </template>
@@ -53,7 +32,7 @@ const handleExportExcel = () => {
                         <template #icon>
                             <ArrowDownloadIcon />
                         </template>
-                        导出城轨事业部改善指标详情
+                        导出城轨事业部改善指标完成详情
                     </n-button>
                     <n-button type="primary" @click="handleExportExcel" class="export-btn">
                         <template #icon>

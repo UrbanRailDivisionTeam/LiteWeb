@@ -1,7 +1,7 @@
 <script setup>
 import { ref, reactive, watch, nextTick, onMounted, onBeforeUnmount } from 'vue'
 import * as echarts from 'echarts'
-import { getDepartmentStats, getLastUpdateTime } from '@/api/staffImprovement'
+import { getDepartmentStats, getLastUpdateTime } from '@/api/staff_improvement'
 import { useMessage } from 'naive-ui'
 
 const message = useMessage()
