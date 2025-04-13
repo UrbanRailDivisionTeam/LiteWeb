@@ -39,3 +39,10 @@ export async function getImprovementDetailsData() {
         method: 'get',
     })
 }
+
+export async function getDepartmentStats() {
+    return request({
+        url: '/api/staff_improvement_analysis/getDepartmentStats',
+        method: 'get',
+    })
+}

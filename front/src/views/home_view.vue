@@ -1,14 +1,14 @@
 <script setup>
 import { NButton, NCollapse, NCollapseItem } from 'naive-ui'
 import { ArrowDownOutline as ArrowDownloadIcon } from '@vicons/ionicons5'
-import { getImprovementDetailsColumns, getImprovementDetailsData} from '@/api/staff_improvement'
+import { getImprovementDetailsColumns, getImprovementDetailsData } from '@/api/staff_improvement'
 import { exportExcel } from '@/utils/excel_export'
 
 // 生成改善明细的excel
 const handleStaffImprovementAnalysisExportExcel = async () => {
     const columns = await getImprovementDetailsColumns()
     const data = await getImprovementDetailsData()
-    exportExcel("全员型改善明细", columns, data)
+    exportExcel('全员型改善明细', columns, data)
 }
 </script>
 

@@ -58,6 +58,26 @@ const router = createRouter({
             name: '城轨通讯录',
             component: () => import('../views/metro_address_directory.vue'),
         },
+        {
+            path: '/workshop_task_monitoring/workshop_task',
+            name: '车间任务量',
+            component: () => import('../views/workshop_task_monitoring/workshop_task.vue'),
+        },
+        {
+            path: '/workshop_task_monitoring/team_task',
+            name: '班组任务量',
+            component: () => import('../views/workshop_task_monitoring/team_task.vue'),
+        },
+        {
+            path: '/wiring_abnormal_monitor/process_control',
+            name: '校线异常进程管控',
+            component: () => import('../views/wiring_abnormal_monitor/process_control.vue'),
+        },
+        {
+            path: '/wiring_abnormal_monitor/problem_analysis',
+            name: '校线异常问题分析',
+            component: () => import('../views/wiring_abnormal_monitor/problem_analysis.vue'),
+        },
     ],
 })
 

@@ -7,6 +7,7 @@ import {
     ConstructOutline as ConstructIcon,
     TrainOutline as TrainIcon,
     ChatbubbleOutline as ChatIcon,
+    AnalyticsOutline as AnalyticsIcon,
 } from '@vicons/ionicons5'
 import { NIcon } from 'naive-ui'
 import { ref, h } from 'vue'
@@ -107,6 +108,36 @@ function renderIcon(icon) {
                                 {
                                     label: '设计变更流转统计',
                                     key: '/trade_federation/design_change_conversion',
+                                },
+                            ],
+                        },
+                        {
+                            label: '车间任务量监测',
+                            key: '/workshop_task_monitoring',
+                            icon: renderIcon(AnalyticsIcon),
+                            children: [
+                                {
+                                    label: '车间任务量',
+                                    key: '/workshop_task_monitoring/workshop_task',
+                                },
+                                {
+                                    label: '班组任务量',
+                                    key: '/workshop_task_monitoring/team_task',
+                                },
+                            ],
+                        },
+                        {
+                            label: '校线异常看板',
+                            key: '/wiring_abnormal_monitor',
+                            icon: renderIcon(AnalyticsIcon),
+                            children: [
+                                {
+                                    label: '进程管控情况',
+                                    key: '/wiring_abnormal_monitor/process_control',
+                                },
+                                {
+                                    label: '问题分析情况',
+                                    key: '/wiring_abnormal_monitor/problem_analysis',
                                 },
                             ],
                         },

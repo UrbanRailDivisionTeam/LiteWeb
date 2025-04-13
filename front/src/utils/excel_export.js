@@ -11,7 +11,9 @@ export const exportExcel = (name, columns, data) => {
     // 设置表头
     worksheet.columns = columns
     // 添加数据
-    data.forEach((dept) => { worksheet.addRow(dept) })
+    data.forEach((dept) => {
+        worksheet.addRow(dept)
+    })
 
     // 生成并下载文件
     workbook.xlsx.writeBuffer().then((buffer) => {
